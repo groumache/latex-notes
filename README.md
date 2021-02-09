@@ -1,2 +1,2 @@
 # latex-notes
-My personnal latex notes
+My personnal notes in latex
