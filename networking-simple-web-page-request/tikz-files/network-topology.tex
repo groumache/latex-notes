@@ -1,0 +1,79 @@
+%% Should be included with the command: \includestandalone[width=.30\textwidth]{tikz-diagrams/diagram}
+%% Folder = tikz-files ; file = tikz-files/network-topology.tex
+
+\documentclass[crop,tikz]{standalone}
+
+\usepackage{graphicx}
+\definecolor{sprinen}{rgb}{0.0, 1.0, 0.7}
+
+\tikzstyle{description} = [
+    anchor=north,
+    text width=3.5cm,
+    text centered,
+]
+
+
+\begin{document}
+\begin{tikzpicture}
+
+
+%%%%%% School Network
+
+%% images
+\node (SN-laptop) [] at (0,0) {\includegraphics[width=1.5cm]{images/laptop.jpg}};
+\node (SN-switch) [] at (5,0) {\includegraphics[width=1.5cm]{images/workgroup_switch.jpg}};
+\node (SN-router) [] at (10,0) {\includegraphics[width=1.5cm]{images/router.jpg}};
+
+%% descriptions
+\node (SN-laptop-des) [description] at (0,-1) {laptop};
+\node [anchor=north, text width=3cm, text centered] at (5,-1) {switch};
+\node (SN-router-des) [description] at (10,-1) {router};
+
+%% links
+\draw[<->, red, thick] (SN-laptop) -- (SN-switch);
+\draw[<->, red, thick] (SN-router) -- (SN-switch);
+
+%% Shows school network
+\draw (-1,1) -- (-2,1) -- node[anchor=south, rotate=90]{School Network} (-2,-2) -- (-1,-2);
+
+
+%%%%%% Internet Provider Network
+
+%% images
+\node (IPN-router-0) [] at (10,-4) {\includegraphics[width=1.5cm]{images/router.jpg}};
+\node (IPN-router-1) [] at (5,-4) {\includegraphics[width=1.5cm]{images/router.jpg}};
+\node (IPN-server) [] at (0,-4) {\includegraphics[height=1.5cm]{images/ibm_tower.jpg}};
+
+%% descriptions
+\node (IPN-server-des) [description] at (0,-5) {DNS server};
+
+%% links
+\draw[<->, thick] (SN-router-des) -- (IPN-router-0);
+\draw[<->, blue, thick] (IPN-router-0) -- (IPN-router-1);
+\draw[<->, blue, thick] (IPN-router-1) -- (IPN-server);
+
+%% Show internet provider network
+\draw (-1,-2.5) -- (-2,-2.5) -- node[anchor=south, rotate=90]{Internet Provider Network} (-2,-6) -- (-1,-6);
+
+
+%%%%%% Content Provider Network
+
+%% images
+\node (CPN-router-0) [] at (10,-8) {\includegraphics[width=1.5cm]{images/router.jpg}};
+\node (CPN-router-1) [] at (5,-8) {\includegraphics[width=1.5cm]{images/router.jpg}};
+\node (CPN-server) [] at (0,-8) {\includegraphics[height=1.5cm]{images/ibm_tower.jpg}};
+
+%% descriptions
+\node (CPN-derver-des) [description] at (0,-9) {Web server};
+
+%% links
+\draw[<->, thick] (IPN-router-0) -- (CPN-router-0);
+\draw[<->, green, thick] (CPN-router-0) -- (CPN-router-1);
+\draw[<->, green, thick] (CPN-router-1) -- (CPN-server);
+
+%% Show content provider network
+\draw (-1,-6.5) -- (-2,-6.5) -- node[anchor=south, rotate=90]{Google's Network} (-2,-10) -- (-1,-10);
+
+
+\end{tikzpicture}
+\end{document}
