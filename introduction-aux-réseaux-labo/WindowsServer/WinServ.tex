@@ -1,0 +1,645 @@
+% !TEX root = ../Network.tex
+
+
+
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+
+%% TO BE COMMENTED
+\usepackage{xcolor}
+\usepackage{amsmath}
+% \usepackage{mdframed}
+% \newmdenv[topline=false, bottomline=false, rightline=false, skipabove=\topsep, skipbelow=\topsep]{example}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes.geometric, calc, arrows}
+
+
+\begin{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Windows Server}
+
+
+
+
+
+\textbf{Attention !}
+\begin{itemize}
+    \item Il faut configurer les paramètres réseaux du Windows Server en mode statique.
+    \item Si on configure le serveur DHCP, il faut que ce soit dans un réseau interne.
+    \item Le DNS du Windows Server est sa propre adresse IP.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Initialisation} \label{subsec:WinServInstallation}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+%% Ctrl+Alt+Delete
+\item Pour déverrouiller Windows Server, on utilise \texttt{Ctrl+Alt+Delete}. Pour le faire, dans le menu en haut à gauche de la fenêtre, clicker sur \textit{Entrée}, puis sur \textit{Clavier}, puis \textit{Envoyer Ctrl-Alt-Del}.
+
+
+
+
+
+%% Installation des rôles
+\item Pour installer les rôles (webserveur, dns, dhcp), on va:
+\begin{enumerate}
+    \item dans la fenêtre \textit{Server Manager}, en haut à droite, clicker sur \textit{Manage}, puis sur \textit{Add Roles and Features}
+    \item dans \textit{Installation Type} et \textit{Server Selection}, laisser les paramètres par défaut
+    \item dans \textit{Server Roles}, ajouter les rôles:
+    \begin{itemize}
+        \item DHCP Server
+        \item DNS Server
+        \item Web Server (IIS)
+    \end{itemize}
+    \item pour le reste, garder les paramètres par défaut (clicker sur \textit{Next}), puis clicker sur \textit{Install}.
+    \item une fois l'installation terminée, clicker sur le drapeau en haut à droite, puis sur \textit{Complete DHCP configuration}.
+\end{enumerate}
+
+
+
+
+
+%% Configuration Client
+\item Quelle configuration pour le client ?
+\begin{itemize}
+    \item Si on a un serveur DHCP, on le laisse en DHCP.
+    \item Sinon, on peut choisir entre le mettre en DHCP ou en statique. \textbf{Attention !} Il faut configurer le serveur manuellement quand même.
+\end{itemize}
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Configuration DHCP} \label{subsec:WinServDHCP}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+%% Configuration DHCP
+\item Pour configurer le serveur DHCP:
+\begin{enumerate}
+    \item dans la fenêtre \textit{Server Manager}, en haut à droite, clicker sur \textit{Tools}, puis sur \textit{DHCP}
+    \item dans la fenêtre \textit{DHCP}, dans le menu de gauche, click-droit sur \textit{IPv4}
+    \item clicker sur \textit{New Scope}
+    \item nom du \textit{Scope} = pas important
+    \item choisir le range d'adresses ip à distribuer, ainsi que les plages d'exclusions
+    \item dans \textit{Configure DHCP Options}, sélectionner \textit{Yes, I want to configure these options now}
+    \item donner l'adresse du serveur DNS (= adresse Windows Server).
+\end{enumerate}
+
+
+
+
+
+%% Réservation d'adresse IP
+\item Pour réserver une adresse IP pour une MAC address particulière, il faut:
+\begin{enumerate}
+    \item dans la fenêtre \textit{DHCP}, dans le menu de gauche, click-droit sur \textit{IPv4/Scope/Reservations}
+    \item clicker sur \textit{New Reservation}.
+\end{enumerate}
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Créer un 1er site web} \label{subsec:WinServSite}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+%% DNS
+\item Configuration DNS:
+\begin{enumerate}
+    \item \textbf{Forward Lookup Zone}
+    \begin{enumerate}
+        \item dans la fenêtre \textit{Server Manager}, en haut à droite, clicker sur \textit{Tools}, puis sur \textit{DNS}
+        \item dans le menu de gauche de la fenêtre \textit{DNS Manager}, en dessous du nom du serveur (Win-DI...), click-gauche puis click-droit sur \textit{Forward Lookup Zone}
+        \item clicker sur \textit{New Zone}
+        \item sélectionner \textit{Primary Zone}, puis mettre le nom de domaine (ex: \texttt{greg.labo})
+        \item puis continuer avec les paramètres par défaut.
+    \end{enumerate}
+    \item \textbf{Reverse Lookup Zone}
+    \begin{enumerate}
+        \item Ensuite, dans \textit{DNS Manager}, click-gauche puis click-droit sur \textit{Reverse Lookup Zone}
+        \item clicker sur \textit{New Zone}
+        \item sélectionner \textit{Primary Zone}, puis \textit{IPv4 Reverse Lookup Zone}
+        \item dans \textit{Network ID}, mettre le réseau dans lequel le serveur opère
+        \item puis continuer avec les paramètres par défaut.
+    \end{enumerate}
+    \item \textbf{Création d'un \textcolor{red}{enregistrement A}} (\texttt{greg.labo} $ \rightarrow $ \texttt{172.10.0.20})
+    \begin{enumerate}
+        \item dans la fenêtre \textit{DNS Manager}, dans le menu de gauche, click-droit sur le nom de votre site (ex: \texttt{greg.labo}) et clicker sur \textit{New Host (A or AAAA)}.
+        \item dans \textit{Name}, on peut mettre ce qu'on veut, voir rien du tout
+        \item dans \textit{IP address}, mettre l'adresse du serveur
+        \item cocher la case \textit{Create associated pointer (PTR) record}.
+    \end{enumerate}
+    \item \textbf{Création d'un \textcolor{red}{enregistrement CNAME}} (\texttt{www.greg.labo} $ \rightarrow $ \texttt{greg.labo})
+    \begin{enumerate}
+        \item dans la fenêtre \textit{DNS Manager}, dans le menu de gauche, click-droit sur le nom de domaine (ex: \texttt{greg.labo})
+        \item clicker sur \textit{New Alias (CNAME)}
+        \item utiliser \textit{www} comme \textit{Alias Name}
+        \item au lieu d'écrire dans \textit{FQDN for target host}, clicker sur \textit{Browse}
+        \item sélectionner l'enregistrement A que vous avez créé précédemment.
+    \end{enumerate}
+    \item \textbf{Remarque}: \\
+    on n'est pas obligé de créer un enregistrement CNAME, mais (apparemment) c'est une bonne pratique de créer un enregistrement: \texttt{www.greg.labo}, qui pointe vers: \texttt{greg.labo}, ou l'inverse en fonction de l'enregistrement A.
+\end{enumerate}
+
+
+
+
+
+%% IIS
+\item Configuration WebServer (\textbf{IIS}):
+\begin{enumerate}
+    \item dans la fenêtre \textit{Server Manager}, en haut à droite, clicker sur \textit{Tools}, puis sur \textit{Internet Information Services (IIS) Manager}
+    \item dans cette nouvelle fenêtre, dans le menu de gauche, click-droit sur \textit{Sites}, puis clicker sur \textit{Add Website}
+    \item remplir le formulaire:
+    \begin{itemize}
+        \item \textit{Site name} -- pas important
+        \item \textit{Physical path} -- créer un nouveau dossier dans: \texttt{C:$\backslash$inetpub$\backslash$wwwroot$\backslash$}
+        \item \textit{IP address} -- adresse du serveur
+        \item \textit{Host name} -- \texttt{www.greg.labo}
+    \end{itemize}
+    \item à l'endroit indiqué dans \textit{Physical path}, créer un document \textit{index.html}, ce sera la première page du site web.
+\end{enumerate}
+
+
+
+
+
+%% Sites Bindings
+\item On peut lier un \textbf{deuxième} nom de domaine au site en allant dans:
+\begin{itemize}
+    \item \textit{IIS Manager}, dans le menu de gauche, click-droit sur le nom du site web
+    \item clicker sur \textit{Edit Bindings}.
+\end{itemize}
+C'est utile pour que: \texttt{www.greg.labo}, et: \texttt{greg.labo}, affichent le même site.
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Créer un 2ème site}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+\item Ajouter un enregistrement CNAME $ \implies $ affiche le site par défaut.
+
+
+
+
+
+\item \textbf{Lier} un nouvel enregistrement CNAME $ \implies $ affiche le premier site.
+
+
+
+
+
+\item Créer un nouveau site $ \implies $ affiche le nouveau site.
+\begin{example}
+    Pareil que créer le premier site, excepté pour la reverse zone, c-à-d:
+    \begin{enumerate}
+        \item créer une \textit{forward lookup zone}
+        \item \textbf{ne pas} créer une \textit{reverse lookup zone}
+        \item créer un \textit{enregistrement A}
+        \item potentiellement, créer un \textit{enregistrement CNAME}.
+    \end{enumerate}
+\end{example}
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Connection HTTPS}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+%% DNS
+\item Ajouter une entrée DNS: créer un enregistrement CNAME pour: \texttt{secure.greg.labo}.
+
+
+
+
+
+%% Certificat auto-signé
+\item Créer un certificat auto-signé:
+\begin{enumerate}
+    \item ouvrir la fenêtre \textit{IIS Manager}
+    \item dans le menu de gauche, clicker sur le nom du server (= Win-DI...)
+    \item dans le menu central (dans la section IIS), click-droit sur \textit{Server Certificates}
+    \item clicker sur \textit{Open Feature}
+    \item dans le menu de droite, clicker sur \textit{Create Self-Signed Certificate}
+    \item choisir un nom et sélectionner \textit{Web Hosting}
+\end{enumerate}
+
+
+
+
+
+%% HTTPS
+\item Ajouter la liaison sécurisée:
+\begin{enumerate}
+    \item dans la fenêtre \textit{IIS Manager}
+    \item dans le menu de gauche, click-droit sur le site pour lequel vous voulez la liaison sécurisée
+    \item clicker sur \textit{Edit Bindings}, puis sur \textit{Add}
+    \item dans \textit{Type}, mettre \texttt{https}, puis mettre l'IP du serveur
+    \item dans \textit{Host Name}, mettre \texttt{secure.greg.labo}
+    \item sélectionner le certificat créé précédemment.
+\end{enumerate}
+
+
+
+
+
+%% Remarque
+\item \textbf{Attention !} Il faut absolument mettre \textbf{https} dans le navigateur (\texttt{https://secure.greg.labo}).
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Serveur FTP}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+%% Rôles
+\item Pour mettre en place un serveur FTP, il faut installer les rôles: \\
+\begin{tabular}{p{6cm}p{6cm}}
+\begin{itemize}
+    \item Web Server (IIS)
+    \item FTP Server
+\end{itemize}
+&
+\begin{itemize}
+    \item FTP Service
+    \item FTP Extensability
+\end{itemize}
+\end{tabular} \\
+Remarque: ils sont tous les uns en dessous des autres dans \textit{Server Roles}.
+
+
+
+
+
+%% Site FTP
+\item Créer un site FTP:
+\begin{enumerate}
+    \item ouvrir la fenêtre \textit{IIS Manager}
+    \item dans le menu de gauche, click-droit sur \textit{site FTP}
+    \item clicker sur \textit{Add FTP Site}, puis mettre le nom du serveur
+    \item créer un répertoire pour le site web (ex: \texttt{C:$\backslash$inetpub$\backslash$wwwroot$\backslash$FTP-Folder})
+    \item indiquer l'adresse IP du serveur et désactiver le SSL
+    \item mettre: \textit{Authentification} = \textit{Basic}, \textit{Authorization} = \textit{All users}
+    \item cocher les cases \textit{Read} et \textit{Write}.
+\end{enumerate}
+
+
+
+
+
+%% Accès au site FTP
+\item Pour accéder au site FTP depuis le client, il faut:
+\begin{enumerate}
+    \item désactiver le firewall du serveur
+    \item dans un navigateur ou un explorateur de fichiers, mettre: \texttt{ftp://<ip\_serveur>/}, dans la barre de recherche
+    \item se connecter avec:
+    \begin{itemize}
+        \item login: \texttt{Administrator}
+        \item mdp: \texttt{Tigrou007}
+    \end{itemize}
+\end{enumerate}
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Forwarder \& Conditional Forwarder}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+%% Topologie
+\item Topologie:
+\begin{center}
+\begin{tikzpicture}
+    %% réseau interne henallux
+    \draw[-, very thick, red] (0,0) -- (11.5,0) node[anchor=west]{Réseau interne hénallux};
+
+    %% internet
+    \node (internet) [] at (9,1) {\textbf{Internet}};
+
+    %% Windows 10 -- Greg
+    \node (win10greg) [rectangle, anchor=south, minimum height=2cm, text centered, text width=2cm, fill=sprinen] at (6,1) {Windows 10 \\ Greg};
+
+    %% Windows 10 -- autre
+    \node (win10autre) [rectangle, anchor=north, minimum height=2cm, text centered, text width=2cm, fill=red!40] at (10,-1) {Windows 10 \\ autre};
+
+    %% WinServ -- Greg
+    \node (winservgreg) [anchor=south, fill=sprinen, text centered, rounded corners, diamond, aspect=2] at (2,1) {WinServ 2019 Greg};
+
+    %% WinServ -- autre
+    \node (winservautre) [anchor=north, fill=red!40, text centered, rounded corners, diamond, aspect=2] at (5,-1) {WinServ 2019 autre};
+
+
+    %% links
+    \draw[-, red] (internet) -- ($(internet) + (0,-1)$);
+    \draw[-, red] (win10greg.south) -- ($(win10greg.south) + (0,-1)$);
+    \draw[-, red] (winservgreg.south) -- ($(winservgreg.south) + (0,-1)$);
+    \draw[-, red] (win10autre.north) -- ($(win10autre.north) + (0,1)$);
+    \draw[-, red] (winservautre.north) -- ($(winservautre.north) + (0,1)$);
+
+
+    %% www.greg.local
+    \draw [->, blue] (win10autre.south) to [out=-150, in=-30] node[anchor=south, yshift=0.2cm, xshift=-0.2cm]{www.greg.labo} (winservautre.south);
+    \draw [->, blue] ($(winservautre.west) + (0,0.1)$) to [out=160, in=-115] node[anchor=south, rotate=-55, xshift=0.2cm, yshift=0.2cm]{www.greg.labo} ($(winservgreg.south west) + (0.1,-0.1)$);
+
+    %% dns response
+    \draw [->, orange] ($(winservgreg.south west) + (-0.1,0)$) to [out=-115, in=160] node[anchor=north, rotate=-60, xshift=-0.1cm, yshift=-0.1cm]{adresse ip} ($(winservautre.west) + (0,-0.1)$);
+    \draw [->, orange] ($(winservautre.south) + (0,-0.2)$) to [out=-30, in=-150] node[anchor=north, yshift=-0.1cm, xshift=-0.1cm]{adresse ip} ($(win10autre.south) + (0,-0.2)$);
+\end{tikzpicture}
+\end{center}
+
+
+
+
+
+%% Serveur DHCP
+\item \textbf{Attention !} Vu qu'on est connecté sur le réseau du laboratoire, il faut désactiver la fonction \textit{serveur dhcp} des serveurs windows.
+
+
+
+
+
+%% Connexion Internet
+\item Ajouter un \textit{Forwarder} pour la connexion à internet:
+\begin{enumerate}
+    \item dans la fenêtre \textit{Server Manager}, en haut à droite, clicker sur \textit{Tools}, puis sur \textit{DNS}
+    \item dans la fenêtre, \textit{DNS Manager}, dans le menu de gauche, clicker sur \textit{Win-DI...} (= nom du serveur)
+    \item click-droit sur \textit{Forwarder}, puis clicker sur \textit{Properties}
+    \item clicker sur \textit{Edit} et ajouter les adresses des serveurs DNS de l'école: 10.101.210.\{8,9\}.
+\end{enumerate}
+
+
+
+
+
+%% Connexion: www.greg.labo
+\item Connexion à un site web (\texttt{www.greg.labo}) hébergé sur le réseau interne avec un \textit{Conditional Forwarder}:
+\begin{enumerate}
+    \item dans la fenêtre \textit{Server Manager}, en haut à droite, clicker sur \textit{Tools}, puis sur \textit{DNS}
+    \item dans la fenêtre, \textit{DNS Manager}, dans le menu de gauche, click-gauche puis click-droit sur \textit{Conditional Forwarders}
+    \item clicker sur \textit{New Conditional Forwarder}
+    \item dans \textit{DNS Domain}, mettre le nom de domaine auquel on veut accéder (ex: \texttt{greg.labo})
+    \item dans \textit{IP addresses of the master servers}, ajouter l'adresse ip du serveur dns qui sait résoudre le nom de domaine (ici, l'ip de: WinServ 2019 Greg).
+\end{enumerate}
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+\end{document}
+
