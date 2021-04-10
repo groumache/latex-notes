@@ -1,0 +1,138 @@
+% !TEX root = main.tex
+
+
+
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\begin{document}
+
+
+
+
+
+
+
+
+
+
+\section{Exercices}
+
+
+
+
+
+\begin{itemize}
+
+
+
+
+
+\item Vrai ou Faux:
+\begin{enumerate}
+    \item Un danger devient un risque si une exposition au danger est possible.
+    \item Le concept de "risque" englobe deux éléments importants:
+    \begin{itemize}
+        \item La possibilité qu’un dommage survienne.
+        \item L’effet de cet éventuel dommage.
+    \end{itemize}
+    \item Plus la probabilité de dommages est grande et plus les conséquences sont graves, plus le danger est important.
+\end{enumerate}
+\begin{example}
+\begin{enumerate}
+    \item \textcolor{red}{\textbf{Vrai.}}
+    \item \textcolor{red}{\textbf{Vrai.}}
+    \item \textcolor{red}{\textbf{Faux.}} Plus la probabilité de dommages est grande et plus les conséquences sont graves, plus le \textbf{risque} est important.
+\end{enumerate}
+\end{example}
+
+
+
+
+
+\item Quels seraient les accidents de travail reconnus ?
+\begin{enumerate}
+    \item Une migraine.
+    \item Glisser en allant prendre un café.
+    \item Se blesser sans porter des EPI (= équipement de protection individuelle).
+    \item Une douleur dorsale due au stress.
+    \item Une chute de 3 mètres de haut.
+\end{enumerate}
+\begin{example}
+\begin{enumerate}
+    \item \textcolor{red}{\textbf{Faux.}} Ce n'est pas soudain.
+    \item \textcolor{red}{\textbf{Faux.}} Pas par le fait du travail.
+    \item \textcolor{red}{\textbf{Vrai.}}
+    \item \textcolor{red}{\textbf{Faux.}} Ce n'est pas soudain.
+    \item \textcolor{red}{\textbf{Vrai.}}
+\end{enumerate}
+\end{example}
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage \section{Comment résoudre un exercice sur le son}
+
+
+
+
+
+Il y a 2 types de problèmes possibles:
+\begin{enumerate}
+    \item On travaille pendant \textcolor{blue}{\textbf{30}} minutes à \textcolor{red}{\textbf{92}} décibels. \\
+    Si on travaille à \textcolor{red}{\textbf{84}} décibels, combien de minutes pour arriver à une dose sonore équivalente ?
+    \begin{example}
+        \begin{enumerate}
+            \item Calculer la différence de dB : $ \Delta = \textcolor{red}{\textbf{92}} - \textcolor{red}{\textbf{84}} = 8 $
+            \item Décomposer $ \Delta $ en une somme de 10 et de 3 : $ \Delta = 8 = 10 \times \textbf{2} - 3 \times \textbf{4} $
+            \item On utilise les formules suivantes:
+            \begin{itemize}
+                \item $ dB + 10 \implies T \times 10 $
+                \item $ dB + 3 \implies T \times 2 $
+            \end{itemize}
+            pour calculer le facteur de multiplication du temps : $ \textcolor{orange}{\textbf{fact}} = 10^\textbf{2} \times 2^\textbf{-4} = 6,25 $
+            \item On mutliplie le temps par ce facteur : $ \textcolor{blue}{\textbf{30}} \times \textcolor{orange}{\textbf{fact}} = 187,5 $ min = 3 h 7 min 30 sec
+        \end{enumerate}
+    \end{example}
+    \item Une source produit \textcolor{red}{\textbf{105}} dB à \textcolor{blue}{\textbf{5}} m. \\
+    À quelle distance produit-elle \textcolor{red}{\textbf{80}} dB ?
+    \begin{example}
+        \begin{enumerate}
+            \item Calculer la différence de dB : $ \Delta = \textcolor{red}{\textbf{105}} - \textcolor{red}{\textbf{80}} = 25 $
+            \item Décomposer $ \Delta $ en une somme de 10 et de 3 : $ \Delta = 25 = 10 \times \textbf{1} + 3 \times \textbf{5} $
+            \item On utilise les formules suivantes :
+            \begin{itemize}
+                \item $ dB + 10 \implies I \times 10 $
+                \item $ dB + 3 \implies I \times 2 $
+            \end{itemize}
+            pour calculer le facteur de multiplication de l'intensité : $ 10^\textbf{1} \times 2^\textbf{5} = 320 $
+            \item Avec la formule :
+            \begin{itemize}
+                \item $ \text{intensité} \approx \text{dist}^2 \implies \text{dist} \approx \sqrt{\text{intensité}} $
+            \end{itemize}
+            on calcule le facteur de multiplication de la distance : $ \sqrt{320} = 17,8 $
+            \item On mutliplie la distance par ce facteur : $ \textcolor{blue}{\textbf{5}} \times 17,8 = 89 $ m
+        \end{enumerate}
+    \end{example}
+\end{enumerate}
+
+
+
+\end{document}

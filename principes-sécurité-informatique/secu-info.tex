@@ -1,0 +1,677 @@
+%% Type de document et encodage de la police
+\documentclass[a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+% \usepackage[french]{babel}
+
+%% Initialise la taille des pages et des marges
+\usepackage[a4paper, top=3cm, bottom=3cm, left=2cm, right=2cm, marginparwidth=2cm]{geometry}
+
+%% Packs utiles
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+%% Commandes perso
+\renewcommand{\arraystretch}{1.2} %% row 20% longer
+\renewcommand{\contentsname}{Table des matières}
+
+%% Pour les exemples
+\usepackage{mdframed}
+\newmdenv[topline=false, bottomline=false, rightline=false, skipabove=\topsep, skipbelow=\topsep]{example}
+
+%% Pour les diagrammes
+\usepackage{tikz}
+\tikzstyle{incolore} = [rectangle, rounded corners, draw=black, minimum height=1cm, minimum width=3cm, text width=3cm, text centered]
+
+
+\title{Principes de Sécu Info -- Notes}
+\author{Grégoire Roumache}
+\date{Septembre 2020}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Quick-Wins pour RSSI}
+
+
+
+
+
+
+
+
+
+
+\subsection{Abréviations}
+
+
+
+
+
+\begin{itemize}
+    \item DFIR = digital forensics \& incident response
+    \item AD = active directory = service centralisé d'identification et d'authentification à un réseau d'ordinateurs
+    \item forêt AD = forêt active directory = configuration active directory contenant des domaines (ex: \textit{example.com}), des utilisateurs, des ordinateurs, des règles de groupes
+    \item DC = domain controller = service sur les serveurs microsoft qui répond aux demandes d'authentification de sécurité dans un domaine windows
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\subsection{Liste des Quick-Wins}
+
+
+
+
+
+\begin{enumerate}
+    \item \textbf{Quick-Win 1} : Supervisez les antivirus
+    \begin{example}
+        Faites monitorer les instances d'antivirus sur votre parc. Quand ils plantent/s’arrêtent/sont désinstallés sur plusieurs machines en temps restreint, sonnez l'alarme.
+    \end{example}
+    \item \textbf{Quick Win 2} = Migrez les administrateurs dans Protected Users
+    \begin{example}
+        Migrez vos administrateurs Windows dans le groupe Protected Users de l'Active Directory.
+    \end{example}
+    \item \textbf{Quick Win 3} = Scannez votre espace d'adresses IP
+    \begin{example}
+        Faites scanner vos adresses IP exposées sur Internet régulièrement, et investiguez les changements de services avant que les attaquants ne le fassent.
+    \end{example}
+    \item \textbf{Quick Win 4} = Développez la connaissance des applications et de leurs propriétaires
+    \begin{example}
+        Listez les principales applications de votre organisation et prenez un verre/repas/café informel avec chacun de leur propriétaire plusieurs fois par an pour connaitre leurs préoccupations et projets. Bonus si vous récupérez leur GSM pour les appeler le jour où.
+    \end{example}
+    \item \textbf{Quick Win 5} = Activez le multi-facteur dans le cloud
+    \begin{example}
+        Activez le multi-facteur d'Office 365/GSuite pour les comptes d'utilisateurs importants: services financiers, administrateurs techniques, VIP. N'attendez pas d'avoir un facteur matériel idéal: un MFA soft (même SMS) est mieux que pas.
+    \end{example}
+    \item \textbf{Quick-Win 6} : Supprimez \texttt{seDebugPrivilege}
+    \begin{example}
+        Faites supprimer le privilege seDebugPrivilege des utilisateurs du domaine Windows. Ce privilège permet de lire la mémoire de n'importe quel processus, et de manipuler processus et taches indépendemment de leur propriétaire. Par défaut, il est donné à "Local Admin" et les seuls qui en aient besoin sont les développeurs système.
+    \end{example}
+    \item \textbf{Quick Win 7} = Identifiez les prestataires DFIR
+    \begin{example}
+        Faites une liste des prestataires potentiels de réponse à incident et de gestion de crise. Contactez chacun pour connaître ses conditions contractuelles, tarifaires, point de contact et délais de réponse en cas d'urgence. Bonus si vous revoyez la liste tous les ans.
+    \end{example}
+    \item \textbf{Quick Win 8} = Déployez un outil de gestion de mot de passe
+    \begin{example}
+        Faites déployer(si ce n'est déjà en place) un outil de gestion de mot de passe sur tout le parc bureautique (comme Keepass). Et préparez une campagne de "nudging" sur l'usage des mots de passe générés uniques et le stockage sécurisé.
+    \end{example}
+    \item \textbf{Quick Win 9} = Utilisez HaveIBeenPowned
+    \begin{example}
+        Inscrire ses domaines DNS sur HaveIBeenPowned pour découvrir les mots de passe leakés avant que les attaquants ne le fassent.
+    \end{example}
+    \item \textbf{Quick Win 10} = Bloquez les IP suspectes sur les services exposés
+    \begin{example}
+        Faites bloquer sur le pare-feu devant les services internes exposés sur Internet (webmail, portail VPN, portail RH...) les adresses IPs de sorties TOR et (si possible) des principaux VPN publics.
+    \end{example}
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+\subsection{Questions/Réponses}
+
+
+
+
+
+\begin{enumerate}
+
+
+
+\item \textbf{Quick Win 2}: le groupe Windows Protected Users est-il utilisable dans une foret AD hétérogène ? Par hétérogène, entendez ici, une foret dans laquelle on trouverait des DC de générations différentes (2008, 2012, 2016, 2003).
+\begin{example}
+    Cette feature n'existe que depuis windows server 2012, pour les serveurs plus vieux, il faut créer une forêt dédiée.
+\end{example}
+
+
+
+\item Quel outil peut être utilisé pour vous aider dans l'application du \textbf{Quick Win 3}, à condition d'être utilisé dans un mode de fonctionnement "raisonnable" (autrement dit, en évitant d'utiliser des options de scan trop intrusives) ?
+\begin{example}
+    \textit{nmap} peut être utilisé pour faire un scan de ports.
+\end{example}
+
+
+
+\item \textbf{Quick Win 4}. Qu'est-ce que le "propriétaire d'une application" dans un contexte professionnel d'entreprise ? En anglais, on utilise aussi souvent le terme "business owner".
+\begin{example}
+    Le propriétaire de l'application est la personne responsable de l'application. Elle est responsable de s'assurer que l'application atteigne les objectifs fixés et respecte les mesures de sécurité appropriées.
+\end{example}
+
+
+
+\item \textbf{Quick Win 5} : Vrai ou faux ? L'activation d'un second facteur d'authentification, même si ce dernier n'est pas techniquement parfait, ce sera toujours mieux qu'un seul facteur d'authentification...".
+\begin{example}
+    Vrai, ça peut démotiver le hacker et rendre son job plus difficile.
+\end{example}
+
+
+
+\item \textbf{Quick Win 7} : connaître le numéro des pompiers avant l'incendie... Voilà un résumé du \textbf{Quick Win 7} mais connaissez-vous le nom d'un tel prestataire en Belgique ?
+\begin{example}
+    Il y a des groupes de consultance locaux (en Belgique) et des grands groupes internationaux comme deloitte ou ernst \& young.
+\end{example}
+
+
+
+\item \textbf{Quick Win 8} : Donnez le nom d'un gestionnaire mot de passe open source.
+\begin{example}
+    Keepass.
+\end{example}
+
+
+
+\item \textbf{Quick Win 9} : Testez le service HaveIBeenPowned sur une de vos adresses mail.
+
+
+
+\item À quel \textbf{Quick Win} liez-vous cette page web ? \\
+https://knowledgebase.paloaltonetworks.com/KCSArticleDetail?id=kA10g000000ClRtCAK
+\begin{example}
+    le Quick Win 10.
+\end{example}
+
+
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Ransomware guide ANSSI}
+
+
+
+
+
+
+
+
+
+
+\subsection{Abréviations}
+
+
+
+
+
+\begin{itemize}
+    \item CERT = computer emergency response team = centre belge (fédéral) pour gérer les urgences informatiques
+    \item SAN = Storage Area Network
+    \item NAS = Network Attached Storage
+    \item VLAN = virtual local area network
+    \item RETEX = retour d'expérience
+    \item CNIL = commission nationale de l’informatique et des libertés
+    \item DPO = délégué à la protection des données
+    \item responsable SI = responsable du système d'information
+    \item responsable SSI = de la sécurité du système d'information
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\subsection{Questions/Réponses}
+
+
+
+
+
+\begin{enumerate}
+
+
+
+\item Qu'est-ce qu'une attaque de type Big Game Hunting ?
+\begin{example}
+    Ce sont des attaques menées par des groupes cybercriminels qui s’en prennent à des organisations aux moyens financiers importants ou aux activités particulièrement critiques. Les rançons peuvent atteindre jusqu’à plusieurs millions d'euros.
+\end{example}
+
+
+
+\item Qu'est-ce qu'une attaque indirecte (pour un secteur donné) ? Quelles peuvent-être les conséquences (préjudices) ?
+\begin{example}
+    Des attaques par rançongiciels qui ciblent des entreprises sous-traitantes ou clés du secteur.
+\end{example}
+
+
+
+\item Le paiement de la rançon garantit-il la récupération des données ? Faut-il la payer ?
+\begin{example}
+    Le paiement des rançons entretient cette activité criminelle et ne garantit pas à la victime la récupération de ses données.
+\end{example}
+
+
+
+\item Ils l'ont vécu... Quel est le secteur d'activité des entreprises/organisations qui témoignent:
+\begin{enumerate}
+    \item CHU Rouen
+    \begin{example}
+        secteur médical
+    \end{example}
+    \item M6
+    \begin{example}
+        secteur des médias (radio)
+    \end{example}
+    \item Fleury Michon
+    \begin{example}
+        secteur agro-alimentaire
+    \end{example}
+\end{enumerate}
+
+
+
+\item Quelle est la mesure prioritaire permettant de réduire les pertes liées à l'attaque par ransomware ?
+\begin{example}
+    L'objectif principal d’un rançongiciel est d’empêcher la victime d’accéder à ses données, le plus souvent par le chiffrement de ces dernières. Devant cette menace, la réalisation de sauvegardes régulières des données apparait comme la mesure prioritaire pour réduire les pertes liées à une attaque par rançongiciel.
+\end{example}
+
+
+
+\item Pour mettre en œuvre le principe de défense en profondeur, on peut notamment travailler sur 2 axes techniques. Quels sont ces 2 axes (indice : ce sont aussi des intitulés de cours...) ?
+\begin{example}
+    L’application du principe de défense en profondeur sur les différents éléments du système d’information permettra de limiter le risque d’indisponibilité totale. Les 2 axes technique du principe de défense en profondeur sont:
+    \begin{enumerate}
+        \item La segmentation réseau par zones de sensibilité et d’exposition des différents éléments du système d’information.
+        \item La limitation des privilèges accordés aux utilisateurs ou encore par la maîtrise des accès à Internet.
+    \end{enumerate}
+    Point pas technique mais cité quand même: \\
+    Sensibiliser les utilisateurs aux risques, évaluer l’opportunité de souscrire à une assurance cyber, préparer un plan de réponse aux cyberattaques et la stratégie de communication associée.
+\end{example}
+
+
+
+\item Une société réalisant régulièrement des snapshots de machines virtuelles stockés dans un SAN ou sur un NAS connecté (solution orientée backup-less), peut-elle se passer d'un logiciel de sauvegarde plus traditionnel ?
+\begin{example}
+    Des sauvegardes régulières de l’ensemble des données, y compris celles présentes sur les serveurs de fichiers, d’infrastructure et d’applications métier critiques doivent être réalisées. En effet, ces sauvegardes peuvent aussi être affectées par un rançongiciel.
+
+    Ces sauvegardes doivent être déconnectées du système d’information pour prévenir leur chiffrement. L’usage de solutions de stockage à froid, comme des disques durs externes ou des bandes magnétiques, permettent de protéger les sauvegardes d’une infection des systèmes et de conserver les données critiques à la reprise d’activité.
+\end{example}
+
+
+
+\item S'il s’avère impossible de patcher un poste, que peut-on mettre en œuvre pour l'utiliser tout de-même de façon sécurisée.
+\begin{example}
+    En cas d’impossibilité avérée, pour des raisons métier par exemple, il s’agira de mettre en œuvre des mesures d’isolement pour les systèmes concernés.
+\end{example}
+
+
+
+\item Comment les CERT peuvent-ils vous aider à lutter contre les ransomwares ?
+\begin{example}
+    Le CERT permet de rester informé de la découverte des vulnérabilités logicielles et matérielles des services utilisés dans votre entité et de la disponibilité des correctifs.
+\end{example}
+
+
+
+\item Si je crée, sur un switch 4 VLANs, (IT, RH, PROD et COMPTA) qui accèdent à Internet grâce au routeur connecté au switch, est-ce que je réalise du cloisonnement ?
+\begin{example}
+    Oui parce que les appareils qui sont dans un VLAN ne peuvent pas accéder aux autres VLAN.
+
+    \begin{center} \rule{0.99\linewidth}{0.1mm} \end{center}
+
+    \textcolor{red}{\textbf{Attention !}} \\
+    À cause du routeur, les VLANs sont des réseaux \textbf{directement connectés}. Il faut rajouter des \textbf{ACL} (= access control list) + un \textbf{firewall} sur le routeur.
+\end{example}
+
+
+
+\item Pouvez-vous donner 2 fonctions assurées par une passerelle Internet sécurisée ?
+\begin{example}
+    \begin{enumerate}
+        \item Filtrer les tentatives de connexion en fonction de la catégorisation ou de la réputation des sites visités (ex: filtrer les sites douteux).
+        \item Identifier les activités anormales (ex : transmission d’un volume de données important).
+    \end{enumerate}
+\end{example}
+
+
+
+\item La journalisation / supervision des journaux est une mesure de sécurité souvent mise en avant. Cependant, pour bon nombre d'entreprises, elle restera une utopie. Pourquoi ? (indice : la réponse n'est pas dans le guide... à vous de réfléchir !)
+\begin{example}
+    \begin{itemize}
+        \item le coût --- il faut une personne pour les lire en temps réel
+        \item difficulté à trier les logs --- il y en a trop et tout le temps, difficile d'en tirer des informations pertinentes
+        \item il faut de l'expertise --- pas facile d'automatiser l'analyse par exemple, il faut s'y connaître
+    \end{itemize}
+\end{example}
+
+
+
+\item Quel est le rôle d'un plan de continuité ? Idem pour le plan de reprise. Notez qu'ici, la frontière entre sécurité opérationnelle (2 IR) et gouvernance (3IR) est très fine.
+\begin{example}
+    Plan de continuité informatique = permettre à l'organisation de continuer à fonctionner quand survient une altération plus ou moins sévère du système d’information.
+
+    Plan de reprise informatique = remettre en service les systèmes d’information qui ont dysfonctionné. Il doit notamment prévoir la restauration des systèmes et des données.
+\end{example}
+
+
+
+\item Vrai ou faux ? "Un exercice visant à tester les plans cités ci-dessus, c'est l'affaire des geeks du service info !" Dès que l'on répond à cette question, on quitte le monde de la sécurité opérationnelle et on bascule dans celui de la gouvernance... Autant le savoir !
+\begin{example}
+    \begin{itemize}
+        \item le service informatique est responsable de fournir le service informatique
+        \item \textbf{mais} tout le monde est concerné lors d'une reprise après une attaque
+        \item comme lors d'un \textbf{exercice incendie} --- tout le monde doit sortir mais ce sont bien les pompiers qui éteignent l'incendie
+        \item test de cyberattaque = couper des serveurs/services pour tester
+    \end{itemize}
+\end{example}
+
+
+
+\item Que doit contenir, en termes d'informations, le dossier main courante à alimenter durant l'incident ?
+\begin{example}
+    Chaque entrée de ce document doit contenir, à minima :
+    \begin{itemize}
+        \item l’heure et la date de l’action ou de l’évènement ;
+        \item le nom de la personne à l’origine de cette action ou ayant
+        informé sur l’évènement ;
+        \item la description de l’action ou de l’évènement.
+    \end{itemize}
+    Ce document doit permettre à tout moment de renseigner les décideurs sur l’état d’avancement des actions entreprises.
+
+    \begin{center} \rule{0.99\linewidth}{0.1mm} \end{center}
+
+    Un peu comme un \textbf{journal de bord}.
+\end{example}
+
+
+
+\item Qu'est-ce que le(s) RETEX ? C'est un terme souvent utilisé sur le web, par un public francophone (p.ex. dans des podcasts français)
+\begin{example}
+    RETEX = retour d'expérience
+\end{example}
+
+
+
+\item Considérez le scénario basique suivant : "Vous êtes responsable SI ou SSI dans une entreprise victime d'un ransomware". Dressez la liste des actions que vous allez réalisées à partir du moment où vous découvrez l'attaque.
+\begin{example}
+    \textcolor{red}{\textbf{Attention !}}
+    \begin{enumerate}
+        \item isoler les équipements infectés
+        \item ouvrir une \textbf{main courante}
+        \item informer la direction, la police et l'APD (si il s'agit de données à caractère personnel)
+        \item contacter des prestataires externes si nécessaire
+        \item communiquer aux métiers affectés
+        \item s'assurer de la continuation des services essentiels de l'entreprise
+        \item restaurer les systèmes affectés à l'aide des backups
+    \end{enumerate}
+\end{example}
+
+
+
+\item Pourquoi une entreprise française devrait-elle communiquer avec la CNIL en cas d'attaque de type ransomware ? Quel est l'équivalent belge à la CNIL ? Qui est le DPO, quel est, de façon résumée son rôle au sein d'une entreprise ?
+\begin{example}
+    CNIL = Commission nationale de l'informatique et des libertés
+
+    DPO = délégué à la protection des données
+
+    \begin{center} \rule{0.99\linewidth}{0.1mm} \end{center}
+
+    \begin{itemize}
+        \item Pourquoi ? $ \implies $ obligation légale (si des données à caractère personnel sont touchées par un ransomware)
+        \item équivalent CNIL en Belgique = APD (= autorité de protection des données)\footnote{https://www.autoriteprotectiondonnees.be}
+        \item rôle DPO = monsieur/madame GDPR, il veille à la bonne mise en oeuvre des mesures du GDPR au sein de l'entreprise
+    \end{itemize}
+\end{example}
+
+
+
+\item Faut-il porter plainte après une attaque ? En Belgique, à qui s'adresser ? (indice : la réponse est dans le document Ransomware: Protection et prévention" du CERT.be).
+\begin{example}
+    Il faut s'adresser à:
+    \begin{itemize}
+        \item la police
+        \item l'APD (si il s'agit de données à caractère personnel)
+        \item au CERT
+    \end{itemize}
+\end{example}
+
+
+
+\item Quel est l'objectif poursuivi par le projet No More Ransom ?
+\begin{example}
+    Ce projet partage des moyens de déchiffrement de certains ransomwares.
+\end{example}
+
+
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Que faire en cas d'attaque ?}
+
+
+
+
+
+\begin{enumerate}
+    \item Ouvrir une main courante,
+    \item isoler tous les équipements infectés,
+    \item déconnecter les entrées possibles de l'attaquant (internet) pour limiter l'attaque en cours.
+    \item Appeler à l'aide :
+    \begin{itemize}
+        \item Police, CERT.be
+        \item Prestataire spécialisé, (idéalement le choisir à l'avance…),
+        \item Une éventuelle assurance.
+    \end{itemize}
+    \item Assurer la communication :
+    \begin{itemize}
+        \item Avec la hiérarchie,
+        \item Avec le métier,
+        \item Avec l'extérieur.
+    \end{itemize}
+    \item Lancer le plan de continuité des services (passage en mode dégradé, si c'est encore possible...).
+    \item Prévenir l'Autorité de Protection des données (APD.be) si des DACP (Données à Caractère Personnel sont impactées). <!> au délai légal…
+    \item Trouver le programme malveillant (p.ex. vérifier les logs).
+    \item Supprimer le ransomware du système informatique infecté. Le système (OS) est
+    intégralement réinstallé si nécessaire (dans une version à jour).
+    \item Corriger les vulnérabilités relatives au point d'entrée de l'attaquant.
+    \item Restaurer les données à l’aide d'une sauvegarde saine.
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{CVSS}
+
+
+
+
+
+\begin{itemize}
+    \item CVSS = Common Vulnerability Scoring System, is a risk assessment system, designed to convey the common attributes and severity of vulnerabilities in computer hardware and software systems
+    \begin{itemize}
+        \item Standardized vulnerability scores
+        \item Open framework with metrics
+        \item Helps prioritize risk in a meaningful way
+    \end{itemize}
+    \item CVSS uses three groups of metrics to assess vulnerability
+    \begin{itemize}
+        \item \textbf{Base Metric Group} - characteristics that are \textit{constant over time} and \textit{across contexts}
+        \item \textbf{Temporal Metric Group} - characteristics that may \textit{change over time}, but \textit{not across user environments}
+        \item \textbf{Environmental Metric Group} - measures the aspects of a vulnerability that are \textit{rooted in a specific organization’s environment}. 
+    \end{itemize}
+    \item CVSS Base Metric Group criteria:
+    \begin{itemize}
+        \item Attack vector
+        \item Attack complexity
+        \item Privileges required
+        \item User interaction
+        \item Scope
+    \end{itemize}
+    \item Impact metric components include:
+    \begin{itemize}
+        \item Confidentiality Impact
+        \item Integrity Impact
+        \item Availability Impact
+    \end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Place de la sécu dans l'entreprise (notes tirées du schéma)}
+
+
+
+
+
+\begin{itemize}
+    \item une entreprise / une organisation / une institution -- définit son identité par -- des valeurs
+    \begin{itemize}
+        \item ex: innovation, respect, qualité
+    \end{itemize}
+    \item des valeurs -- permettent de définir -- une mission et une vision
+    \begin{itemize}
+        \item mission = "la définition de sa raison d’être, l’aspiration suprême qu’elle tente continuellement d’atteindre"
+        \item vision = "l’état futur désiré"
+        \item la vision peut changer plus rapidement que la mission pour s’adapter au changement.
+    \end{itemize}
+    \item une mission et une vision -- se déclinent en -- une stratégie
+    \item une stratégie -- se concrétise en -- une politique
+    \item (en fait ce sont \textit{des stratégies} et \textit{des politiques})
+    \begin{itemize}
+        \item stratégie = "la détermination des orientations à long terme de l’entreprise et l’adoption des actions consécutives, y compris l’allocation des ressources nécessaires à la réalisation de ces objectifs"
+        \item caractéristiques d'une politique:
+        \begin{enumerate}
+            \item
+            \begin{itemize}
+                \item simple et compréhensible
+                \item utilisable/utilisée au quotidien
+            \end{itemize}
+            \item 
+            \begin{itemize}
+                \item aisément réalisable
+                \item orientée objectifs
+                \item vérifiable et contrôlable
+            \end{itemize}
+            \item 
+            \begin{itemize}
+                \item durée de vie: 3-4 ans
+                \item de maintenance facile
+            \end{itemize}
+        \end{enumerate}
+    \end{itemize}
+    \item une stratégie -- a comme sous-composante -- la stratégie de sécurité de l'information
+    \item la stratégie de sécurité de l'information -- à laquelle correspond -- une politique de sécurité informatique
+    \item la politique de sécurité informatique -- est déclinable en plusieurs documents:
+    \begin{itemize}
+        \item politique de contrôle d’accès
+        \item politique de gestion des droits numériques
+        \item politique de prévention
+        \item politique de protection
+        \item ...
+    \end{itemize}
+    \item ces documents -- sont complétés de -- procédures et documentations techniques
+    \item ces documents -- utilisent des sources d'information comme:
+    \begin{itemize}
+        \item la loi
+        \item les bonnes pratiques
+        \item une analyse des risques + une méthodologie dédiée
+        \item une analyse des risques systematique fondee sur les retours d’experience des utilisateurs
+        \item toute autre source d’information jugée utile
+    \end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
