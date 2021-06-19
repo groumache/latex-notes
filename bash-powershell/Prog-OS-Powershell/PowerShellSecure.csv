@@ -1,0 +1,12 @@
+﻿firstname;lastname;username;departement;ChangePWlogon;ou
+Pol;Birau;polbir;TI;true;OU=Professeurs,DC=henallux,DC=local
+Marie;Vellreille;marvel;TI;true;OU=Professeurs,DC=henallux,DC=local
+Luc;Ribet;lucrib;IR;true;OU=Professeurs,DC=henallux,DC=local
+Jean;Bastin;jeabas;IR;true;OU=Professeurs,DC=henallux,DC=local
+Marie;Virelle;marvir;Administration;true;OU=Administration,DC=henallux,DC=local
+Vincent;Ruelle;vinrue;Administration;true;OU=Administration,DC=henallux,DC=local
+Etudiant1;TI;etuti1;Etudiants;false;OU=Etudiants,DC=henallux,DC=local
+Etudiant2;TI;etuti2;Etudiants;false;OU=Etudiants,DC=henallux,DC=local
+Etudiant1;IR;etuir1;Etudiants;false;OU=Etudiants,DC=henallux,DC=local
+Etudiant2;IR;etuir2;Etudiants;false;OU=Etudiants,DC=henallux,DC=local
+Etudiant3;IR;etuir3;Etudiants;false;OU=Etudiants,DC=henallux,DC=local
