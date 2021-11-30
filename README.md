@@ -26,8 +26,9 @@ Those are my personnal notes in latex taken over the years. Often shared with ot
 - [Pfsense - OpenVPN & Captive Portal](https://github.com/groumache/latex-notes/blob/main/pfsense/pfsense.pdf)
 - [Rapport pentest Metasploitable et monitoring Zabix](https://github.com/groumache/latex-notes/blob/main/rapport-s%C3%A9curit%C3%A9-os-pentest-et-monitoring/rapport-secu-os.pdf)
 - [Préparation examen de système embarqués](https://github.com/groumache/latex-notes/blob/main/syst%C3%A8mes-embarqu%C3%A9s/systemes-embarques.pdf)
-- [Sécurité et bin-être en milieu professionnel](https://github.com/groumache/latex-notes/blob/main/s%C3%A9curit%C3%A9-et-bien-%C3%AAtre-au-travail/main.pdf)
+- [Sécurité et bien-être en milieu professionnel](https://github.com/groumache/latex-notes/blob/main/s%C3%A9curit%C3%A9-et-bien-%C3%AAtre-au-travail/main.pdf)
 - [Sécurité WEB](https://github.com/groumache/latex-notes/blob/main/s%C3%A9curit%C3%A9-web/secu-web.pdf)
+- [Administrateur de système open source (linux)](https://github.com/groumache/latex-notes/blob/main/os-linux-pratique/os-linux-pratique.pdf)
 
 
 ## Personnal Notes
