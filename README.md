@@ -17,8 +17,8 @@ Those are my personnal notes in latex taken over the years. Often shared with ot
 ##  Notes from my Bachelor in Cybersecurity
 
 - [Architecture des systèmes informatiques](architecture-des-syst%C3%A8mes-informatiques/main.pdf)
-- [Bases de données](bases-de-donn%C3%A9es-synth%C3%A8se-et-projet/synth%C3%A8se-db/DB.pdf), [projet du cours de bases de données](https://github.com/groumache/latex-notes/tree/main/bases-de-donn%C3%A9es-synth%C3%A8se-et-projet/projet-db), [sécurité des données](s%C3%A9curit%C3%A9-des-donn%C3%A9es/secu-donnees.pdf)
-- [Résolution d'exercices Bash/Powershell](https://github.com/groumache/latex-notes/tree/main/bash-powershell)
+- [Bases de données](bases-de-donn%C3%A9es-synth%C3%A8se-et-projet/synth%C3%A8se-db/DB.pdf), [projet du cours de bases de données](bases-de-donn%C3%A9es-synth%C3%A8se-et-projet/projet-db), [sécurité des données](s%C3%A9curit%C3%A9-des-donn%C3%A9es/secu-donnees.pdf)
+- [Résolution d'exercices Bash/Powershell](bash-powershell)
 - [Notes de laboratoire du cours d'introduction au réseau (Q1)](introduction-aux-r%C3%A9seaux-labo/Network.pdf), [idem (Q2)](introduction-aux-r%C3%A9seaux-labo-Q2/main.pdf), [notes de théorie (Q1)](introduction-aux-r%C3%A9seaux-th%C3%A9orie/reseaux-th.pdf), [sécurité des réseaux](s%C3%A9curit%C3%A9-des-r%C3%A9seaux/securite-des-reseaux.pdf)
 - [Introduction à la sécurité informatique](introduction-%C3%A0-la-s%C3%A9curit%C3%A9-informatique/secu-info.pdf), [principes de sécurité informatique](principes-s%C3%A9curit%C3%A9-informatique/secu-info.pdf)
 - [Méthode de configuration Cisco Packet Tracer](m%C3%A9thode-configuration-packet-tracer/network-method.pdf)
