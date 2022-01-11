@@ -30,6 +30,7 @@ Those are my personnal notes in latex taken over the years. Often shared with ot
 - [Sécurité WEB](s%C3%A9curit%C3%A9-web/secu-web.pdf)
 - [Administrateur de système open source (linux)](os-linux-pratique/os-linux-pratique.pdf)
 - [Préparation au wargame](wargame/preparations.md)
+- [Sécurité défensive](sécurité-défensive/sécurité-défensive.pdf)
 
 
 ## Personnal Notes
