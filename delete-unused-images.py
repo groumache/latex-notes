@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 image_extensions: List[str] = ['jpg', 'jpeg', 'png', 'svg', 'gif', 'JPG', 'JPEG', 'PNG', 'SVG', 'GIF']
-dir_with_latex: str = "C:\\Users\\groum\\Documents\\Latex\\github-latex\\sécurité-défensive\\"
+dir_with_latex: str = "C:\\Users\\groum\\Documents\\Latex\\github-latex\\sécurité-offensive\\"
 dir_list: List[str] = [dir_with_latex]
 image_list: List[str] = []
 latex_list: List[str] = []

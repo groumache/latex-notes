@@ -31,6 +31,7 @@ Those are my personnal notes in latex taken over the years. Often shared with ot
 - [Administrateur de système open source (linux)](os-linux-pratique/os-linux-pratique.pdf)
 - [Préparation au wargame](wargame/preparations.md)
 - [Sécurité défensive](sécurité-défensive/sécurité-défensive.pdf)
+- [Rapport sécurité offensive](sécurité-offensive/rapport.pdf)
 
 
 ## Personnal Notes
