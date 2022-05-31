@@ -2,6 +2,8 @@
 *.aux
 *.out
 *.toc
+*.lof
+*.lot
 *.fls
 *.log
 *.synctex(busy)
