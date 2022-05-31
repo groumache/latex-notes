@@ -5,6 +5,11 @@ Those are my personal notes in latex taken over the years. Often shared with oth
 > **Note**: I also added markdown notes and a python script to delete unused images.
 
 
+## Travail de fin d'études
+
+[Étude et implémentation de solutions pour l’analyse forensique en entreprise](TFE/tfe.pdf)
+
+
 ## Notes from when I was in Civil Engineering
 
 [Analyse II](analyse-II/main.pdf)

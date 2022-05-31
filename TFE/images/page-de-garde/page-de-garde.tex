@@ -1,0 +1,49 @@
+\documentclass[a4paper, 12pt]{book}
+\usepackage[a4paper, top=3cm, bottom=3cm, left=2.5cm, right=2.5cm, marginparwidth=2cm]{geometry}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+
+\usepackage{enumitem}
+\usepackage{lscape}
+\usepackage{float}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\usepackage{xcolor}
+\definecolor{nrbdarkblue}{RGB}{0,47,81}
+\definecolor{nrbmiddleblue}{RGB}{0,124,180}
+\definecolor{nrblightblue}{RGB}{79,169,209}
+\definecolor{nrbred}{RGB}{215,25,27}
+\definecolor{nrbgray}{RGB}{91,96,105}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\rfoot{
+    \begin{tikzpicture}[remember picture,overlay]
+        \fill[nrbdarkblue] ($(current page.south west)+(0,0)$) rectangle ($(current page.south west)+(4.2,1)$);
+        \fill[nrbmiddleblue] ($(current page.south west)+(4.2,0)$) rectangle ($(current page.south west)+(8.4,1)$);
+        \fill[nrblightblue] ($(current page.south west)+(8.4,0)$) rectangle ($(current page.south west)+(12.6,1)$);
+        \fill[nrbred] ($(current page.south west)+(12.6,0)$) rectangle ($(current page.south west)+(16.8,1)$);
+        \fill[nrbgray] ($(current page.south west)+(16.8,0)$) rectangle ($(current page.south west)+(21,1)$);
+    \end{tikzpicture}
+}
+
+\newcommand{\oui}{\textcolor{blue}{oui}}
+\newcommand{\non}{\textcolor{red}{non}}
+
+\setlength{\parskip}{1em}
+\setlist[itemize]{itemsep=0.1cm}
+
+\title{Procédures et logiciels d'acquisition et d'analyse de données forensiques et de menaces}
+\author{Grégoire Roumache}
+
+\begin{document}
+
+\maketitle
+
+Hello world!
+
+\end{document}

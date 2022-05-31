@@ -1,0 +1,37 @@
+%% Should be included with the command: \includestandalone[width=.30\textwidth]{tikz-diagrams/diagram}
+%% Folder = tikz-diagrams ; file = tikz-diagrams/diagram.tex
+
+\documentclass[12pt,crop,tikz]{standalone}
+
+\usepackage{graphicx}
+
+\usetikzlibrary{calc}
+
+\tikzstyle{incolore} = [
+    rectangle,
+    text centered,
+    minimum height=0.8cm,
+    text width=5cm
+]
+
+\begin{document}
+\begin{tikzpicture}
+
+    \node (1) [] at (0,0)  {\includegraphics[width=2cm]{images/IR-diagram/preparations.png}};
+    \node (2) [] at (5,0)  {\includegraphics[width=2cm]{images/IR-diagram/detection-analysis.png}};
+    \node (3) [] at (10,0) {\includegraphics[width=2cm]{images/IR-diagram/containment.png}};
+    \node (4) [] at (15,0) {\includegraphics[width=2cm]{images/IR-diagram/post-incident.png}};
+
+    \node () [incolore] at (0,-2.0)  {Préparation};
+    \node () [incolore] at (4.8,-2.0)  {Détection \& Analyse};
+    \node () [incolore] at (10.2,-2.2) {Mise sous-contrôle \\ Éradication de la menace \\ Restauration};
+    \node () [incolore] at (15,-2.0) {Analyse post-incident};
+
+    \draw[->] (1) -- (2);
+    \draw[->] (3) -- (4);
+    \draw[->] (2) to [out=45, in=135] (3);
+    \draw[->] (3) to [out=-135, in=-45] (2);
+    \draw[->] (4) to [out=150, in=30] (1);
+
+\end{tikzpicture}
+\end{document}

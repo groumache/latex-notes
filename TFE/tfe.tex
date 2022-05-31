@@ -1,0 +1,202 @@
+% LTeX: language=fr
+
+\documentclass[a4paper, 12pt]{book}
+\usepackage[a4paper, top=3.5cm, bottom=4.0cm, left=3.0cm, right=3.0cm, marginparwidth=2cm]{geometry}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+
+
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{standalone}
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{frontmatter}{
+    \fancyhf{}
+    \fancyfoot[C]{\thepage}
+}
+\fancypagestyle{body}{
+    \fancyhead[LE,RO]{\footnotesize \leftmark}
+    \fancyhead[LO,RE]{\footnotesize \rightmark}
+    \fancyfoot[C]{\thepage}
+}
+
+\makeatletter
+\renewcommand\frontmatter{
+    \cleardoublepage
+    \pagestyle{frontmatter}
+    \@mainmatterfalse
+}
+\renewcommand\mainmatter{
+    \cleardoublepage
+    \pagestyle{body}
+    \@mainmattertrue
+}
+\makeatother
+
+
+\makeatletter
+\newsavebox\Diam@nd \newlength\x@D\newlength\y@D
+\newcommand\quem{
+  \sbox\Diam@nd{\raisebox{-1ex}{\scalebox{0.7}[0.9]{\rotatebox{45}{\rule{1em}{1em}}}}}
+  \makebox[\wd\Diam@nd]{\makebox[0pt]{\usebox\Diam@nd}\makebox[0pt]{\raisebox{-0.02cm}{\textcolor{white}{?}}}}}
+\makeatother
+
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+
+\usepackage{xcolor}
+\definecolor{nrbdarkblue}{RGB}{0,47,81}
+\definecolor{nrbmiddleblue}{RGB}{0,124,180}
+\definecolor{nrblightblue}{RGB}{79,169,209}
+\definecolor{nrbred}{RGB}{215,25,27}
+\definecolor{nrbgray}{RGB}{91,96,105}
+
+\newcommand{\rothead}[1]{\rotatebox{45}{#1}}
+\newcommand{\oui}{\textcolor{blue!65}{\textbf{$\times$}}}
+\newcommand{\non}{\textcolor{red!65}{\textbf{$\times$}}}
+
+\setlength{\parskip}{1em}
+\setlist[itemize]{itemsep=0.1cm}
+
+\tikzstyle{incolore} = [rectangle, text centered, minimum height=0.8cm, text width=6.5cm]
+\tikzstyle{todo} = [rectangle, fill=gray!50, minimum height=0.4cm, anchor=west]
+\tikzstyle{done} = [todo, fill=blue!65]
+\tikzstyle{hold} = [rectangle, minimum height=0.4cm, pattern color=blue!65, pattern=north east lines, anchor=west]
+\tikzstyle{doing} = [todo, fill=red!65]
+
+\usepackage{mdframed}
+\newmdenv[topline=false, bottomline=false, rightline=false, skipabove=\topsep, skipbelow=\topsep, linewidth=0.1cm, linecolor=nrbmiddleblue]{customquote}
+\newmdenv[topline=false, bottomline=false, rightline=false, skipabove=\topsep, skipbelow=\topsep, linewidth=0.1cm, linecolor=nrbred]{example}
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+\include{contents/titlepage.tex}
+
+\let\cleardoublepage\clearpage
+
+
+
+
+
+\frontmatter
+
+
+
+
+
+\include{contents/remerciements.tex}
+
+
+\tableofcontents \addcontentsline{toc}{chapter}{Table des matières} \newpage
+
+
+\include{contents/synopsis.tex}
+
+
+\include{contents/presentation-entreprise.tex}
+
+
+
+
+
+\mainmatter
+
+
+
+
+
+\include{contents/introduction.tex}
+
+
+\include{contents/besoins.tex}
+
+
+\include{contents/theory.tex}
+
+
+\include{contents/tools.tex}
+
+
+\include{contents/architecture.tex}
+
+
+\include{contents/implementation.tex}
+
+
+\include{contents/procedures.tex}
+
+
+\include{contents/ameliorations.tex}
+
+
+\include{contents/conclusion.tex}
+
+
+
+
+
+\appendix \renewcommand{\thechapter}{\Roman{chapter}}
+
+
+
+
+
+\listoftables \addcontentsline{toc}{chapter}{Liste des tableaux} \newpage
+\listoffigures \addcontentsline{toc}{chapter}{Table des figures} \newpage
+
+
+
+
+
+\include{contents/rapport-stage.tex}
+
+
+
+
+
+\begin{thebibliography}{9} \addcontentsline{toc}{chapter}{Bibliographie}
+    \bibitem{1} \textit{Cybersecurity Incident - Glossary}. (s. d.). NIST Computer Security Resource Center. Consulté le 31 mars 2022, à l’adresse \url{https://csrc.nist.gov/glossary/term/cybersecurity\_incident}
+    \bibitem{2} National Institute of Standards and Technology (2012) \textit{Computer Security Incident Handling Guide}. (Department of Commerce, Washington, D.C.), NIST Special Publication 800-61 Revision 2. \url{http://dx.doi.org/10.6028/NIST.SP.800-61r2}
+    \bibitem{3} \textit{Digital forensics}. (s. d.). Interpol. Consulté le 3 avril 2022, à l’adresse \url{https://www.interpol.int/How-we-work/Innovation/Digital-forensics}
+    \bibitem{4} Interpol (2019) \textit{INTERPOL Global guidelines for digital forensics laboratories}.
+    \bibitem{5} National Institute of Standards and Technology (2006) \textit{Guide to Integrating Forensic Techniques into Incident Response}. (Department of Commerce, Washington, D.C.), NIST Special Publication 800-86. \url{https://doi.org/10.6028/NIST.SP.800-86}
+    \bibitem{6} Association of Chief Police Officers (2011) \textit{Good Practice Guide for Digital Evidence}.
+    \bibitem{7} \textit{Mémoire virtuelle}. (s.d.). Wikipedia. Consulté le 19 avril 2022, ) l'adresse \url{https://fr.wikipedia.org/wiki/M\%C3\%A9moire_virtuelle}
+    \bibitem{8} \textit{Volatility Framework}. (s. d.). GitHub. Consulté le 19 avril 2022, à l’adresse \url{https://github.com/volatilityfoundation/volatility3/blob/7626f60bb494d11ad29b7073bbbb5a95f16c98a9/volatility3/framework/exceptions.py\#L55}
+    \bibitem{9} \textit{Comparison of Memory Acquisition Software for Windows}. (2021, 25 décembre). Medium. Consulté le 24 avril 2022, à l’adresse \url{https://thanursan.medium.com/comparison-of-memory-acquisition-software-for-windows-e8c6d981db23}
+    \bibitem{10} \textit{Process Injection : Process Hollowing, Sub-technique T1055.012}. (s. d.). Mitre. Consulté le 30 avril 2022, à l’adresse \url{https://attack.mitre.org/techniques/T1055/012/}
+    \bibitem{11} \textit{Get Bitlocker Recovery Key From Cmd}. (s. d.). Password Recovery. Consulté le 29 mars 2022, à l’adresse \url{https://www.top-password.com/blog/tag/get-bitlocker-recovery-key-from-cmd/}
+    \bibitem{12} \textit{Make USB Storage Read-Only : Registry, Group Policy, or Software}. (2012, 19 juillet). SumTips. Consulté le 29 mars 2022, à l’adresse \url{https://sumtips.com/how-to/make-usb-storage-read-only-registry-group-policy-or-software/}
+    \bibitem{13} \textit{Finding Advanced Malware Using Volatility}. (2016, 29 juin). eForensics. Consulté le 3 mars 2022, à l’adresse \url{https://eforensicsmag.com/finding-advanced-malware-using-volatility/}
+\end{thebibliography}
+
+
+
+
+
+
+
+
+
+
+\end{document}

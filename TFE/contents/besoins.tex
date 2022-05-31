@@ -1,0 +1,15 @@
+% LTeX: language=fr
+
+\chapter{Analyse des besoins}
+
+L'analyse des besoins sert à poser un cadre à un projet. Après avoir déterminé les attentes, on peut chercher à lister les étapes qu'il faudra pour achever le projet et faire une estimation du temps et des coûts pour y arriver. Ensuite vient une phase de discussion où toutes les parties impliquées dans le projet se mettent d'accord sur les moyens mis à dispositions et les besoins qui devront être satisfaits ou non. Il est important de revenir dans le courant de l'implémentation du projet sur les points bloquants afin de les résoudre
+
+Afin d'améliorer les capacités de l’équipe SecOps en termes d’analyse forensique, ce qui comprend aussi l’analyse de menaces, le besoin était de créer une solution d'analyse isolée. Elle doit être isolée pour prévenir la propagation des menaces analysées, mais elle doit aussi pouvoir être facilement restaurée dans un état vierge. Parmi ses outils, elle doit compter un ensemble d'outils d'analyse forensique et d'analyse de menaces, y compris une sandbox, des outils d'analyse réseau, des logiciels de copie et de montage de disque, etc. Le tout avec une documentation sur l'utilisation des outils.
+
+Pour remplir les objectifs de restauration facile de l'état de la machine et isoler au mieux les machines d'analyse, il a été décidé que celles-ci seraient installées dans un environnement virtualisé cloud. Pour des raisons de coût, elle se trouvera non pas dans un cloud public, mais dans NECS, le cloud privé de NRB.
+
+Parce que certains des outils à installer ne fonctionnent que sur des systèmes de type Linux et d'autres uniquement sur des systèmes de type Windows, il convient d'installer deux machines virtuelles avec chacune un de ces deux systèmes. De plus, la solution de sandbox nécessite que la virtualisation imbriquée soit activée sur la machine virtuelle qui la supporte afin de pouvoir lancer des machines virtuelles imbriquées dans lesquelles le logiciel ou document malveillant va être détonné.
+
+Le dernier besoin qui n'a pas encore été abordé est celui de l'acquisition des données forensiques. Il s'agit non-seulement de pouvoir obtenir les données forensiques d'une machine Windows, mais aussi de pouvoir acquérir les données forensiques provenant de clés USB.
+
+

@@ -1,0 +1,27 @@
+% LTeX: language=fr
+
+\chapter{Pistes d'amélioration}
+
+
+
+
+
+\section{Analyse de malware}
+
+Les solutions apportées en ce qui concerne l'analyse de menaces se concentre sur la mise en place d'outils d'analyse automatique dans une infrastructure isolée. Pour qu'elle soit isolée mais que le transfert de fichier reste possible, il faut passer par l'intermédiaire d'un serveur FTP, ce qui fait perdre beaucoup de temps. Cependant, en créant une ouverture firewall en HTTP uniquement pour les utilisateurs qui se connectent en VPN, il serait possible de faciliter la soumission de ces fichiers en permettant aux analystes de soumettre directement les éléments potentiellement malveillants à l'interface web de la plateforme d'analyse automatique. Il est aussi possible d'automatiser la soumission de ces fichiers pour économiser du temps. Par exemple, quand un utilisateur signale un mail comme étant potentiellement du phishing, il pourrait être automatiquement envoyé pour analyse. Ceci pourrait être fait avec la plateforme d'automatisation Splunk SOAR.
+
+Toujours concernant l'analyse de malwares, ou plutôt l'analyse de maldocs, c'est-à-dire des documents malicieux, la machine virtuelle utilisée par le logiciel CAPE Sandbox plante lorsque l'on essaie de les lancer. Ce serait une bonne amélioration de corriger cela pour pouvoir effectuer une analyse dynamique sur ces documents. La création d'une machine virtuelle Linux pour analyser des malwares qui ne fonctionnent que sur les systèmes Linux est aussi une piste d'amélioration intéressante.
+
+Enfin, l'analyse manuelle de logiciels malveillants pourrait aussi être approfondie. C'est une tâche qui ne sera sans doute pas effectuée tous les jours étant donné que ça pourrait faire perdre beaucoup de temps inutilement. Mais malgré tout, il faudra dans certains cas entrer plus en profondeur dans l'analyse du malware. Par exemple dans le cas où un PC a été compromis et on veut comprendre ce qu'il a fait sur le système et comment le détecter sur d'autres machines au sein de l'environnement. Approfondir les recherches sur cet aspect-là est donc une piste d'amélioration.
+
+
+
+
+
+\section{Analyse forensique}
+
+Pour ce qui est de l'analyse forensique, en plus d'approfondir l'analyse forensique des systèmes Windows, il est aussi possible d'étendre l'éventail des systèmes qu'on puisse analyser, comme en s'attaquant aux systèmes Linux et macOS.
+
+Les machines d'analyse se trouvent dans un environnement virtualisé, ce qui est très pratique et flexible. Cependant, il crée également des contraintes. Par exemple, le temps de transfert des données forensiques vers l'infrastructure d'analyse peut être lent, ce qui peut faire perdre un temps crucial lors d'analyses. C'est particulièrement le cas lors d'analyses forensiques en-dehors de l'entreprise. C'est pour ça qu'avoir un PC portable pour effectuer ces analyses peut être intéressant. Il faut aussi utiliser des SSD portables, rapides et de grande capacité pour pouvoir stocker les données forensiques et les résultats d'analyse. De plus, pour analyser les clés USB, une solution de Write-Blocker physique, dans lequel on peut brancher une clé USB et ainsi empêcher l'écriture accidentelle sur la clé est un outil supplémentaire à envisager.
+
+
