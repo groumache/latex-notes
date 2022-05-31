@@ -1,8 +1,8 @@
 # Grégoire Roumache's latex notes
 
-Those are my personnal notes in latex taken over the years. Often shared with other students. Written in either French or English.
+Those are my personal notes in latex taken over the years. Often shared with other students. Written in either French or English.
 
-> **Note**: I also added markdown notes and a python script to delete unused images .
+> **Note**: I also added markdown notes and a python script to delete unused images.
 
 
 ## Notes from when I was in Civil Engineering
@@ -34,7 +34,7 @@ Those are my personnal notes in latex taken over the years. Often shared with ot
 - [Rapport sécurité offensive](sécurité-offensive/rapport.pdf)
 
 
-## Personnal Notes
+## Personal Notes
 
 - [Simple Web Page Request](networking-simple-web-page-request/main.pdf)
 
@@ -43,3 +43,4 @@ Those are my personnal notes in latex taken over the years. Often shared with ot
 
 - [Bypass fail2ban with IPv6](https://roumache.com/blog/cybersecurity/bypass-fail2ban.html)
 - [This summer, I automated my student job](https://roumache.com/blog/automation/student-job.html)
+- [Webscrapping as Fast as Possible](https://roumache.com/blog/programming/faster-webscrapping.html)
